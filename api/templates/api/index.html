@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <title>Channel</title>
+    </head>
+    <body>
+        <h1 id="data">{{ data }}</h1>
+    </body>
+    <script>
+        const web_socket = new WebSocket('ws://localhost:8000/ws/random-int/')
+
+        web_socket.onmessage = (event) => {
+            document.querySelector('#data').innerText = event.data;
+        }
+
+    </script>
+</html>

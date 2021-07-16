@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <title>Chat</title>
+    </head>
+    <body>
+        <h5 id="chat-app">Hello World<h5>
+        <ul id="chat-log">
+            {% for chat in chats %}
+                <li>{{ chat.chat }}</li>
+            {% endfor %}
+        </ul>
+        <input id="chat-message-input" type="text" size="100"><br>
+        <input id="chat-message-submit" type="button" value="Send">
+    </body>
+    <script>
+        const web_socket = new WebSocket('ws://localhost:8000/ws/chat-consumer/')
+
+        web_socket.onmessage = (event) => {
+            var ul = document.getElementById("chat-log");
+            var li = document.createElement("li");
+            li.appendChild(document.createTextNode(event.data));
+            ul.appendChild(li);
+        }
+
+        document.querySelector('#chat-message-submit').onclick = () => {
+            var message = document.querySelector('#chat-message-input');
+            web_socket.send(JSON.stringify({
+                'message': message.value
+            }));
+
+            message.value = '';
+        }
+        
+    </script>
+</html>
